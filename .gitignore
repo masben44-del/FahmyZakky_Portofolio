@@ -1,0 +1,10 @@
+# Dependencies — diinstall ulang otomatis, JANGAN diupload (gede banget)
+node_modules/
+
+# Hasil build — dibuat ulang otomatis oleh hosting, JANGAN diupload
+dist/
+
+# Logs & cache
+*.log
+.DS_Store
+.vite/

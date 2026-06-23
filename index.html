@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Fahmy Zakky — Web Designer & AI Video Creator. Immersive websites and AI-powered video, crafted to make brands unforgettable." />
+    <title>Fahmy Zakky — Web Design & AI Video</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Custom cursor -->
+    <div class="cursor" data-cursor></div>
+    <div class="cursor-dot" data-cursor-dot></div>
+
+    <!-- Preloader -->
+    <div class="loader" data-loader>
+      <div class="loader__inner">
+        <span class="loader__count" data-loader-count>0</span>
+        <span class="loader__label">Loading experience</span>
+      </div>
+    </div>
+
+    <!-- Page transition overlay -->
+    <div class="transition" data-transition>
+      <span class="transition__label" data-transition-label></span>
+    </div>
+
+    <!-- WebGL canvas (persists across pages) -->
+    <canvas class="webgl" data-webgl></canvas>
+
+    <!-- Grain overlay -->
+    <div class="grain"></div>
+
+    <!-- Navigation -->
+    <header class="nav" data-nav>
+      <a href="#/" class="nav__logo" data-route data-link>
+        <span>FZ</span><em>©2026</em>
+      </a>
+      <nav class="nav__menu">
+        <a href="#/web-design" data-route data-link>Web Design</a>
+        <a href="#/video-ai" data-route data-link>Video AI</a>
+        <a href="#/documents" data-route data-link>Documents</a>
+        <a href="#/contact" data-route data-link>Contact</a>
+      </nav>
+      <a href="#/contact" class="nav__cta" data-route data-link>
+        <span>Let's talk</span>
+        <span class="nav__cta-dot"></span>
+      </a>
+    </header>
+
+    <!-- Router renders pages here -->
+    <main id="app" data-app></main>
+
+    <!-- Global footer -->
+    <footer class="footer">
+      <div class="footer__col">
+        <span class="footer__name">FAHMY ZAKKY</span>
+        <span class="footer__role">Web Design & AI Video</span>
+      </div>
+      <div class="footer__col footer__col--links">
+        <a href="#/" data-route data-link>Home</a>
+        <a href="#/web-design" data-route data-link>Web Design</a>
+        <a href="#/video-ai" data-route data-link>Video AI</a>
+        <a href="#/documents" data-route data-link>Documents</a>
+        <a href="#/contact" data-route data-link>Contact</a>
+      </div>
+      <div class="footer__col footer__col--meta">
+        <span>© 2026 Fahmy Zakky</span>
+        <span>Crafted in Indonesia</span>
+        <button data-link data-top>Back to top ↑</button>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
