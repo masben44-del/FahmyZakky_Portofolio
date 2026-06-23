@@ -1,0 +1,3 @@
+# Taruh file video showreel di folder ini.
+# Nama default yang dibaca website: showreel.mp4, clip-1.mp4, clip-2.mp4
+# (bisa diubah di src/config.js → VIDEO_REEL)

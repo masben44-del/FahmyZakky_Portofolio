@@ -96,3 +96,17 @@ export const DOCUMENTS = {
     },
   ],
 };
+
+/* ---------- Video AI: showreel (file video lokal di /public/videos) ----------
+   Taruh file video di folder:  public/videos/
+   Kasih nama PERSIS seperti di "src" bawah ini (atau ganti nama di sini).
+   Tips: tiap file usahakan < 25 MB (compress dulu kalau besar).            */
+export const VIDEO_REEL = [
+  { src: "/videos/showreel.mp4", label: "Showreel", big: true },
+  { src: "/videos/clip-1.mp4", label: "Clip 01" },
+  { src: "/videos/clip-2.mp4", label: "Clip 02" },
+];
+
+// 👇 GANTI dengan link folder Google Drive project video kamu
+//    (set sharing: "Anyone with the link" biar klien bisa buka)
+export const VIDEO_PROJECTS_URL = "https://drive.google.com/drive/folders/1iIFDAzuxnDcyrahVFNTkWw3-OS6SIJNG?usp=drive_link";

@@ -1,5 +1,15 @@
-import { VIDEO_CINEMATIC, VIDEO_UGC } from "../config.js";
+import { VIDEO_CINEMATIC, VIDEO_UGC, VIDEO_REEL, VIDEO_PROJECTS_URL } from "../config.js";
 import { marquee, contactBand, pricing } from "../partials.js";
+
+function videoCard(v) {
+  return `
+    <div class="vplayer ${v.big ? "" : "vplayer--small"}" data-reveal-card>
+      <video class="vplayer__video" src="${v.src}"
+             ${v.big ? "autoplay muted loop" : "muted loop"}
+             playsinline preload="metadata" controls></video>
+      ${v.label ? `<span class="vplayer__tag">${v.label}</span>` : ""}
+    </div>`;
+}
 
 export const title = "Video AI";
 export const theme = "video";
@@ -21,18 +31,15 @@ export function render() {
     </section>
 
     <section class="vshowcase">
+      <div class="vshowcase__head">
+        <p class="vshowcase__index" data-fade>(Showreel)</p>
+        <a class="vshowcase__cta" href="${VIDEO_PROJECTS_URL}" target="_blank" rel="noopener" data-link>
+          <span>Lihat semua project</span>
+          <svg viewBox="0 0 24 24" width="18" height="18"><path d="M5 19L19 5M19 5H9M19 5v10" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+        </a>
+      </div>
       <div class="vshowcase__grid">
-        <div class="vplayer" data-reveal-card>
-          <span class="vplayer__tag">Showreel</span>
-          <span class="vplayer__play">▶</span>
-          <span class="vplayer__note">Contoh video segera tayang</span>
-        </div>
-        <div class="vplayer vplayer--small" data-reveal-card>
-          <span class="vplayer__play">▶</span>
-        </div>
-        <div class="vplayer vplayer--small" data-reveal-card>
-          <span class="vplayer__play">▶</span>
-        </div>
+        ${VIDEO_REEL.map(videoCard).join("")}
       </div>
     </section>
 
