@@ -39,7 +39,7 @@ function packageCard(p) {
 }
 
 /** A full pricing block: heading + package cards + order buttons. */
-export function pricing({ index, title, note, packages, fastwork }) {
+export function pricing({ index, title, note, packages, orderUrl, orderLabel = "Order via Fastwork" }) {
   return `
     <section class="packages">
       <div class="packages__head">
@@ -50,7 +50,7 @@ export function pricing({ index, title, note, packages, fastwork }) {
       <div class="packages__grid">
         ${packages.map(packageCard).join("")}
       </div>
-      ${orderCTA(fastwork)}
+      ${orderCTA(orderUrl, orderLabel)}
     </section>`;
 }
 

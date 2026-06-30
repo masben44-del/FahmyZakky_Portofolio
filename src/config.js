@@ -38,39 +38,53 @@ export const WEB = {
   ],
 };
 
-/* ---------- Video AI — split into 2 sub-services ---------- */
-export const VIDEO_CINEMATIC = {
-  label: "Cinematic",
-  fastwork: "https://fastwork.id/user/fahmy22/ai-video-42033348",
-  tagline: "Company profile & storytelling berkualitas sinema — Omni Flash & Seedance 2.0, tanpa ribet shooting.",
+/* ---------- Video AI — 2 sub-services, pricing mirrors Fiverr (USD) ----------
+   Order buttons point to the Fiverr gigs (lieblinglieblin).                 */
+
+// Gig 1 — AI Video Ads / Commercial
+export const VIDEO_COMMERCIAL = {
+  label: "Commercial",
+  fiverr: "https://www.fiverr.com/lieblinglieblin/produce-stunning-ai-video-ads-commercial-for-your-brand",
+  tagline: "Video ads sinematik buat brand & produk — hook kuat, siap tayang di TikTok, Reels & Shorts.",
   packages: [
     {
-      name: "Omni Flash", price: "Rp350.000", unit: "/ menit",
-      meta: "2–3 hari · 1x revisi",
-      points: ["720p (upscale 1080p)", "Gerak dinamis", "Cocok TikTok / Reels / Shorts", "Durasi fleksibel"],
+      name: "Basic", price: "$50", unit: "/ video",
+      meta: "15 detik · 2 hari · 1x revisi",
+      points: ["Video ads 15 detik", "Karakter konsisten", "10 shots", "Untuk brand / produk"],
     },
     {
-      name: "Seedance 2.0", price: "Rp2.400.000", unit: "/ menit", featured: true,
-      meta: "2 hari · 1x revisi",
-      points: ["1080p native", "Multi-cut generation", "Karakter konsisten", "Native audio sync + kontrol kamera"],
+      name: "Standard", price: "$100", unit: "/ video", featured: true,
+      meta: "30 detik · 3 hari · 1x revisi",
+      points: ["Video ads 30 detik", "Prompt / workflow delivery", "Karakter konsisten", "15 shots"],
+    },
+    {
+      name: "Premium", price: "$150", unit: "/ video",
+      meta: "60 detik · 4 hari · 1x revisi",
+      points: ["Video ads 60 detik", "Video editing", "Prompt / workflow delivery", "20 shots"],
     },
   ],
 };
 
-export const VIDEO_UGC = {
-  label: "UGC",
-  fastwork: "https://fastwork.id/user/fahmy22/ai-video-79882198",
-  tagline: "Konten UGC AI viral-ready untuk produk & e-commerce — TikTok, Shopee, affiliate. Natural & engaging.",
+// Gig 2 — AI Company Profile / Cinematic
+export const VIDEO_PROFILE = {
+  label: "Company Profile",
+  fiverr: "https://www.fiverr.com/lieblinglieblin/create-ai-company-profile-video-for-your-business",
+  tagline: "Company profile cinematic AI — storytelling brand kamu dalam 1–3 menit, tanpa ribet shooting.",
   packages: [
     {
-      name: "Omni Flash", price: "Rp350.000", unit: "/ menit",
-      meta: "2–3 hari · 1x revisi · 30 dtk = Rp175.000",
-      points: ["720p UGC style", "Voice-over natural", "Hak komersial", "Siap upload"],
+      name: "Basic", price: "$150", unit: "/ video",
+      meta: "1 menit · 3 hari · 1x revisi",
+      points: ["Company profile 1 menit", "Cinematic AI", "15 shots", "Untuk brand kamu"],
     },
     {
-      name: "Seedance 2.0", price: "Rp2.400.000", unit: "/ menit", featured: true,
-      meta: "3–5 hari · 1x revisi",
-      points: ["1080p sinematik", "Multi-cut", "Karakter konsisten", "Voice-over natural + hak komersial"],
+      name: "Standard", price: "$250", unit: "/ video", featured: true,
+      meta: "2 menit · 5 hari · 2x revisi",
+      points: ["Company profile 2 menit", "Cinematic AI", "20 shots", "2x revisi"],
+    },
+    {
+      name: "Premium", price: "$350", unit: "/ video",
+      meta: "3 menit · 7 hari · 3x revisi",
+      points: ["Company profile 3 menit", "Cinematic AI", "25 shots", "3x revisi"],
     },
   ],
 };

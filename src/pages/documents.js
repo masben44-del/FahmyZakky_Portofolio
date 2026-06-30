@@ -60,7 +60,7 @@ export function render() {
       title: "Mulai dari<br/>Rp50.000.",
       note: "Semua paket: 1 hari pengerjaan, 3x revisi, diskusi unlimited.",
       packages: DOCUMENTS.packages,
-      fastwork: DOCUMENTS.fastwork,
+      orderUrl: DOCUMENTS.fastwork,
     })}
 
     ${contactBand()}

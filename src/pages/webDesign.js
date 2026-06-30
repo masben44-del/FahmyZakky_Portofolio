@@ -57,7 +57,7 @@ export function render() {
       title: "Pilih paket<br/>website kamu.",
       note: "Harga sesuai Fastwork. Custom code, bukan template.",
       packages: WEB.packages,
-      fastwork: WEB.fastwork,
+      orderUrl: WEB.fastwork,
     })}
 
     ${contactBand()}

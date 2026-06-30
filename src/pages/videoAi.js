@@ -1,4 +1,4 @@
-import { VIDEO_CINEMATIC, VIDEO_UGC, VIDEO_REEL, VIDEO_PROJECTS_URL } from "../config.js";
+import { VIDEO_COMMERCIAL, VIDEO_PROFILE, VIDEO_REEL, VIDEO_PROJECTS_URL } from "../config.js";
 import { marquee, contactBand, pricing } from "../partials.js";
 
 function videoCard(v) {
@@ -24,9 +24,9 @@ export function render() {
         <span class="line line--serif" data-reveal><span><em>that converts</em></span></span>
       </h1>
       <p class="page-hero__desc" data-fade>
-        Dua arah, satu standar kualitas: <strong>Cinematic</strong> untuk company
-        profile & storytelling, dan <strong>UGC</strong> untuk konten produk
-        viral-ready. Dibuat dengan AI — tanpa ribet shooting.
+        Dua arah, satu standar kualitas: <strong>Commercial</strong> untuk video
+        ads brand & produk, dan <strong>Company Profile</strong> untuk storytelling
+        sinematik. Dibuat dengan AI — tanpa ribet shooting.
       </p>
     </section>
 
@@ -43,7 +43,7 @@ export function render() {
       </div>
     </section>
 
-    ${marquee(["Cinematic", "UGC", "Company Profile", "TikTok & Reels", "E-Commerce"])}
+    ${marquee(["Commercial Ads", "Company Profile", "Cinematic AI", "TikTok & Reels", "Brand Story"])}
 
     <section class="statement">
       <h2 class="statement__text" data-scrub data-word-wrap>
@@ -55,33 +55,35 @@ export function render() {
       </h2>
     </section>
 
-    <!-- Sub-service A: Cinematic -->
-    <div class="vsplit" id="cinematic">
+    <!-- Sub-service A: Commercial / Video Ads -->
+    <div class="vsplit" id="commercial">
       <div class="vsplit__head">
         <span class="vsplit__tag">Layanan A</span>
-        <h2 class="vsplit__title" data-reveal><span>Cinematic</span></h2>
-        <p class="vsplit__desc" data-fade>${VIDEO_CINEMATIC.tagline}</p>
+        <h2 class="vsplit__title" data-reveal><span>Commercial</span></h2>
+        <p class="vsplit__desc" data-fade>${VIDEO_COMMERCIAL.tagline}</p>
       </div>
       ${pricing({
-        index: "(Paket — Cinematic)",
+        index: "(Paket — Commercial)",
         title: "",
-        packages: VIDEO_CINEMATIC.packages,
-        fastwork: VIDEO_CINEMATIC.fastwork,
+        packages: VIDEO_COMMERCIAL.packages,
+        orderUrl: VIDEO_COMMERCIAL.fiverr,
+        orderLabel: "Order via Fiverr",
       })}
     </div>
 
-    <!-- Sub-service B: UGC -->
-    <div class="vsplit" id="ugc">
+    <!-- Sub-service B: Company Profile / Cinematic -->
+    <div class="vsplit" id="company-profile">
       <div class="vsplit__head">
         <span class="vsplit__tag">Layanan B</span>
-        <h2 class="vsplit__title" data-reveal><span>UGC</span></h2>
-        <p class="vsplit__desc" data-fade>${VIDEO_UGC.tagline}</p>
+        <h2 class="vsplit__title" data-reveal><span>Company Profile</span></h2>
+        <p class="vsplit__desc" data-fade>${VIDEO_PROFILE.tagline}</p>
       </div>
       ${pricing({
-        index: "(Paket — UGC)",
+        index: "(Paket — Company Profile)",
         title: "",
-        packages: VIDEO_UGC.packages,
-        fastwork: VIDEO_UGC.fastwork,
+        packages: VIDEO_PROFILE.packages,
+        orderUrl: VIDEO_PROFILE.fiverr,
+        orderLabel: "Order via Fiverr",
       })}
     </div>
 
