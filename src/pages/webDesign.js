@@ -1,65 +1,59 @@
-import { PROJECTS, WEB } from "../config.js";
-import { contactBand, pricing } from "../partials.js";
+import { WEB } from "../config.js";
+import { BTN, pageHero, workCard, pricing, scrubText, ctaBand } from "../partials.js";
+import { setupMedia } from "../media.js";
+import { stackScene, setupStack } from "../scenes.js";
 
-export const title = "Web Design";
-export const theme = "web";
-export const visual = 1; // lines
-
-function card(p) {
-  return `
-    <a class="project" href="${p.url}" target="_blank" rel="noopener" data-link data-reveal-card>
-      <div class="project__frame">
-        <iframe class="project__preview" src="${p.url}" loading="lazy" tabindex="-1"
-                scrolling="no" title="${p.name} preview"></iframe>
-        <span class="project__view">View<br/>site</span>
-      </div>
-      <div class="project__meta">
-        <span class="project__name"><span class="project__num">${p.num}</span> ${p.name}</span>
-        <span class="project__tag">${p.tag} · ${p.year}</span>
-      </div>
-      <div class="project__bar"></div>
-    </a>`;
-}
+export const title = "Vibe Code Web Design";
 
 export function render() {
   return `
-    <section class="page-hero">
-      <p class="page-hero__index" data-fade>(Web Design — 01)</p>
-      <h1 class="page-hero__title">
-        <span class="line" data-reveal><span>Six brands.</span></span>
-        <span class="line line--serif" data-reveal><span><em>Six worlds.</em></span></span>
-      </h1>
-      <p class="page-hero__desc" data-fade>
-        Landing page & website modern dengan custom code — responsive, cepat,
-        dan penuh motion. Hover untuk preview, klik untuk masuk.
-      </p>
-    </section>
+    ${pageHero({
+      index: "(Vibe Code Web Design — 02)",
+      lines: ["Vibe code", "~web design."],
+      desc: "Landing page dan website perusahaan yang dibangun lewat vibe coding — desain + AI menghasilkan custom code, bukan template. Cepat, responsive, dan penuh motion supaya brand kamu terasa hidup.",
+    })}
 
-    <section class="work">
-      <div class="projects">
-        ${PROJECTS.map(card).join("")}
+    ${stackScene(WEB.projects)}
+
+    <section class="section">
+      <div class="section__head">
+        <span class="label" data-fade>(Portofolio — ${String(WEB.projects.length).padStart(2, "0")} website live)</span>
+        <p class="section__note" data-fade>Klik untuk membuka website aslinya.</p>
+      </div>
+      <div class="grid2">
+        ${WEB.projects.map((p, i) => workCard(p, i)).join("")}
       </div>
     </section>
 
-    <section class="statement">
-      <h2 class="statement__text" data-scrub data-word-wrap>
-        <span data-word>Websites</span> <span data-word>that</span>
-        <span data-word>feel</span> <span data-word>less</span>
-        <span data-word>like</span> <span data-word>pages</span>
-        <span data-word>—</span> <span data-word>and</span>
-        <span data-word>more</span> <span data-word>like</span>
-        <span data-word>experiences.</span>
+    <section class="intro intro--tight">
+      <span class="label" data-fade>(Pendekatan kami)</span>
+      <h2 class="intro__text" data-scrub>
+        ${scrubText("Websites that feel less like *pages* — and more like *experiences.* Custom code, fast load, motion that *means* something.")}
       </h2>
     </section>
 
-    ${pricing({
-      index: "(Paket — Web Design)",
-      title: "Pilih paket<br/>website kamu.",
-      note: "Harga sesuai Fastwork. Custom code, bukan template.",
-      packages: WEB.packages,
-      orderUrl: WEB.fastwork,
-    })}
+    <section class="section" id="harga">
+      <ul class="incl" data-fade>
+        ${["Landing page", "Company website", "Custom code", "Mobile responsive", "Animasi & interaksi"].map((x) => `<li>${x}</li>`).join("")}
+      </ul>
+      ${pricing({
+        label: "(Paket — Vibe Code Web Design)",
+        title: "Mulai dari Rp1 juta.",
+        note: "Harga sesuai Fastwork. Semua paket custom code, bukan template.",
+        packages: WEB.packages,
+        buttons: [
+          BTN.fastwork(WEB.orderUrl, WEB.orderLabel),
+          BTN.whatsapp("Halo Lensa 51, saya mau tanya soal pembuatan website."),
+          BTN.email(),
+        ],
+      })}
+    </section>
 
-    ${contactBand()}
+    ${ctaBand()}
   `;
+}
+
+export function setup(root) {
+  setupStack(root);
+  return setupMedia(root);
 }

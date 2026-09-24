@@ -1,37 +1,112 @@
-import { EMAIL, FASTWORK_PROFILE } from "../config.js";
-import { orderCTA } from "../partials.js";
+import { EMAIL, WHATSAPP, FASTWORK_PROFILE } from "../config.js";
+import { ARROW, pageHero, socialList } from "../partials.js";
+import { openMail } from "../mail.js";
 
 export const title = "Contact";
-export const theme = "contact";
-export const visual = 0; // chrome
+
+const SERVICES = ["AI Cinematic & UGC", "Vibe Code Web Design", "Documents", "Layanan AI lainnya"];
+const BUDGETS = ["< Rp1 jt", "Rp1–3 jt", "Rp3–5 jt", "> Rp5 jt"];
+const NOTE = "Brief otomatis terisi di WhatsApp atau Gmail — tinggal tekan kirim. Untuk Fastwork, brief disalin otomatis lalu tinggal ditempel di chat.";
+
+const chips = (name, list, type) =>
+  list.map((v) => `
+    <label class="pick">
+      <input type="${type}" name="${name}" value="${v}" />
+      <span>${v}</span>
+    </label>`).join("");
 
 export function render() {
   return `
-    <section class="contact" id="contact">
-      <p class="contact__index" data-fade>(Let's build something)</p>
-      <a href="${FASTWORK_PROFILE}" target="_blank" rel="noopener" class="contact__mail" data-link>
-        <span class="contact__mail-text" data-reveal><span>Start a project</span></span>
-        <svg viewBox="0 0 24 24" width="40" height="40"><path d="M5 19L19 5M19 5H9M19 5v10" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>
-      </a>
+    ${pageHero({
+      index: "(Contact — 05)",
+      lines: ["Let's talk", "~about your brand."],
+    })}
 
-      <div class="contact__order">
-        ${orderCTA(FASTWORK_PROFILE, "Lihat semua jasa di Fastwork")}
-      </div>
+    <section class="contact">
+      <form class="brief" data-brief data-fade novalidate>
+        <span class="label">(Project brief)</span>
 
-      <div class="contact__details">
-        <div class="contact__item" data-fade>
-          <span class="contact__label">Email</span>
-          <a href="mailto:${EMAIL}" class="contact__value" data-link>${EMAIL}</a>
+        <div class="field">
+          <label for="b-name">Nama / brand</label>
+          <input id="b-name" name="name" type="text" placeholder="Nama kamu atau nama brand" required />
         </div>
-        <div class="contact__item" data-fade>
-          <span class="contact__label">Freelance</span>
-          <a href="${FASTWORK_PROFILE}" target="_blank" rel="noopener" class="contact__value" data-link>Fastwork · fahmy22 ↗</a>
+
+        <fieldset class="field">
+          <legend>Layanan yang dibutuhkan</legend>
+          <div class="picks">${chips("service", SERVICES, "checkbox")}</div>
+        </fieldset>
+
+        <fieldset class="field">
+          <legend>Perkiraan budget</legend>
+          <div class="picks">${chips("budget", BUDGETS, "radio")}</div>
+        </fieldset>
+
+        <div class="field">
+          <label for="b-msg">Ceritakan project kamu</label>
+          <textarea id="b-msg" name="message" rows="4" placeholder="Tujuan, referensi, deadline…"></textarea>
         </div>
-        <div class="contact__item" data-fade>
-          <span class="contact__label">Based in</span>
-          <span class="contact__value">Indonesia · Worldwide</span>
+
+        <div class="brief__actions">
+          <button type="submit" class="btn btn--lime" value="whatsapp" data-link><span>Kirim via WhatsApp</span>${ARROW}</button>
+          <button type="submit" class="btn btn--ghost" value="fastwork" data-link><span>Kirim via Fastwork</span>${ARROW}</button>
+          <button type="submit" class="btn btn--ghost" value="email" data-link><span>Kirim via email</span>${ARROW}</button>
         </div>
-      </div>
+        <p class="brief__note" data-brief-note>${NOTE}</p>
+      </form>
+
+      <aside class="channels" data-fade>
+        <span class="label">(Hubungi kami)</span>
+        ${socialList("socials--big", { arrow: true })}
+      </aside>
     </section>
   `;
+}
+
+export function setup(root) {
+  const form = root.querySelector("[data-brief]");
+  const note = root.querySelector("[data-brief-note]");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+    const name = (data.get("name") || "").toString().trim();
+    if (!name) {
+      form.querySelector("#b-name").focus();
+      form.classList.add("is-invalid");
+      return;
+    }
+    const body = [
+      `Halo Lensa 51, saya ${name}.`,
+      `Layanan: ${data.getAll("service").join(", ") || "-"}`,
+      `Budget: ${data.get("budget") || "-"}`,
+      "",
+      (data.get("message") || "").toString(),
+    ].join("\n");
+
+    const via = e.submitter?.value;
+    if (via === "email") {
+      const subject = encodeURIComponent(`Project baru — ${name}`);
+      openMail(`mailto:${EMAIL}?subject=${subject}&body=${encodeURIComponent(body)}`);
+    } else if (via === "fastwork") {
+      // Fastwork has no way to prefill its chat, so hand the brief over via the clipboard
+      let copied = true;
+      try {
+        await navigator.clipboard.writeText(body);
+      } catch {
+        copied = false;
+      }
+      window.open(FASTWORK_PROFILE, "_blank", "noopener");
+      note.textContent = copied
+        ? "✓ Brief sudah disalin — tinggal tempel (Ctrl+V / tahan & tempel) di chat Fastwork."
+        : "Brief belum bisa disalin otomatis di browser ini — salin manual dari kolom di atas, lalu tempel di chat Fastwork.";
+      note.classList.add("is-done");
+    } else {
+      window.open(WHATSAPP.link(body), "_blank", "noopener");
+    }
+  });
+  form.addEventListener("input", () => {
+    form.classList.remove("is-invalid");
+    note.textContent = NOTE;
+    note.classList.remove("is-done");
+  });
 }

@@ -2,111 +2,112 @@ import "./style.css";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
-import { createScene } from "./webgl/scene.js";
+import { createShutter } from "./aperture.js";
 import { createRouter } from "./router.js";
+import { initMailLinks } from "./mail.js";
+import { socialList } from "./partials.js";
 
 gsap.registerPlugin(ScrollTrigger);
 
-/* ---------------- Custom cursor ---------------- */
+/* ---------------- Focus-reticle cursor ---------------- */
 function initCursor() {
-  const ring = document.querySelector("[data-cursor]");
-  const dot = document.querySelector("[data-cursor-dot]");
-  if (!ring || window.matchMedia("(hover: none)").matches) return;
+  const cur = document.querySelector("[data-cursor]");
+  if (!cur || window.matchMedia("(hover: none)").matches) return;
 
-  let mx = window.innerWidth / 2,
-    my = window.innerHeight / 2;
-  let rx = mx,
-    ry = my;
-
+  let mx = -100, my = -100, x = mx, y = my;
   window.addEventListener("pointermove", (e) => {
     mx = e.clientX;
     my = e.clientY;
-    dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
   });
-
   gsap.ticker.add(() => {
-    rx += (mx - rx) * 0.18;
-    ry += (my - ry) * 0.18;
-    ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
+    x += (mx - x) * 0.22;
+    y += (my - y) * 0.22;
+    cur.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
   });
-
-  // delegated hover (works for dynamically-swapped page content)
   document.addEventListener("mouseover", (e) => {
-    if (e.target.closest("[data-link]")) ring.classList.add("is-hover");
+    if (e.target.closest("[data-link]")) cur.classList.add("is-hover");
   });
   document.addEventListener("mouseout", (e) => {
-    if (e.target.closest("[data-link]")) ring.classList.remove("is-hover");
+    if (e.target.closest("[data-link]")) cur.classList.remove("is-hover");
   });
 }
 
-/* ---------------- Smooth scroll ---------------- */
-function initSmoothScroll(scene) {
+/* ---------------- Smooth scroll + progress bar ---------------- */
+function initSmoothScroll() {
   const lenis = new Lenis({
-    duration: 1.2,
+    duration: 1.1,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     smoothWheel: true,
   });
+  const bar = document.querySelector("[data-progress]");
+  const nav = document.querySelector("[data-nav]");
 
   lenis.on("scroll", (e) => {
     ScrollTrigger.update();
-    scene.setScroll(e.scroll);
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.transform = `scaleX(${max > 0 ? e.scroll / max : 0})`;
+    nav.classList.toggle("is-scrolled", e.scroll > 40);
   });
-
   gsap.ticker.add((time) => lenis.raf(time * 1000));
   gsap.ticker.lagSmoothing(0);
 
-  const top = document.querySelector("[data-top]");
-  if (top) top.addEventListener("click", () => lenis.scrollTo(0));
-
+  document.querySelector("[data-top]")?.addEventListener("click", () => lenis.scrollTo(0));
   if (import.meta.env.DEV) window.__lenis = lenis;
   return lenis;
 }
 
-/* ---------------- Preloader (runs once) ---------------- */
-function runLoader(onDone) {
-  const loader = document.querySelector("[data-loader]");
-  const count = document.querySelector("[data-loader-count]");
-  const obj = { v: 0 };
-
-  gsap.to(obj, {
-    v: 100,
-    duration: 1.6,
-    ease: "power2.inOut",
-    onUpdate: () => (count.textContent = Math.round(obj.v)),
-    onComplete: () => {
-      gsap.to(loader, {
-        yPercent: -100,
-        duration: 1,
-        ease: "expo.inOut",
-        onComplete: () => {
-          loader.style.display = "none";
-          onDone();
-        },
-      });
-    },
+/* ---------------- Mobile menu ---------------- */
+function initMenu() {
+  const btn = document.querySelector("[data-burger]");
+  const close = () => {
+    document.body.classList.remove("menu-open");
+    btn.setAttribute("aria-expanded", "false");
+  };
+  btn.addEventListener("click", () => {
+    const open = document.body.classList.toggle("menu-open");
+    btn.setAttribute("aria-expanded", String(open));
   });
+  document.querySelectorAll("[data-menu] a").forEach((a) => a.addEventListener("click", close));
+  return close;
+}
+
+/* ---------------- Loader: iris opens after counting to 51 ---------------- */
+function runLoader(shutter, onDone) {
+  const el = shutter.root;
+  el.classList.add("is-active");
+  shutter.state.open = 0;
+  shutter.apply();
+  const n = { v: 0 };
+
+  gsap.timeline()
+    .fromTo(shutter.center, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.6, ease: "expo.out" })
+    .to(n, {
+      v: 51,
+      duration: 1.3,
+      ease: "power2.inOut",
+      onUpdate: () => (shutter.label.textContent = `f/${String(Math.round(n.v)).padStart(2, "0")}`),
+    }, 0)
+    .to(shutter.center, { opacity: 0, scale: 1.08, duration: 0.4, ease: "power2.in" }, "+=0.15")
+    .add(onDone, "-=0.1")
+    .to(shutter.state, { open: 1, duration: 1.2, ease: "expo.inOut", onUpdate: shutter.apply }, "-=0.15")
+    .add(() => el.classList.remove("is-active"));
 }
 
 /* ---------------- Boot ---------------- */
 function boot() {
-  const canvas = document.querySelector("[data-webgl]");
-  let scene = { tick() {}, setScroll() {}, resize() {}, setVisual() {} };
-  try {
-    scene = createScene(canvas);
-  } catch (err) {
-    console.warn("WebGL unavailable:", err);
-    canvas.style.display = "none";
-  }
-  gsap.ticker.add(scene.tick);
+  history.scrollRestoration = "manual";
+  const shutterRoot = document.querySelector("[data-shutter]");
+  const shutter = { ...createShutter(shutterRoot), root: shutterRoot };
 
+  document.querySelector("[data-socials]").outerHTML = socialList("socials--footer");
   initCursor();
-  const lenis = initSmoothScroll(scene);
+  initMailLinks();
+  const lenis = initSmoothScroll();
+  const closeMenu = initMenu();
 
-  const app = document.querySelector("[data-app]");
-  const router = createRouter({ app, lenis, scene });
-  router.start();
-
-  runLoader(() => ScrollTrigger.refresh());
+  const router = createRouter({ app: document.querySelector("[data-app]"), lenis, shutter, closeMenu });
+  router.start({ hold: true });
+  runLoader(shutter, () => router.release());
 }
 
 if (document.readyState === "loading") {

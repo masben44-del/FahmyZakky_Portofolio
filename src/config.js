@@ -1,24 +1,110 @@
 /* ============================================================
-   Central config — edit these, the whole site updates.
-   Pricing mirrors Fastwork (fahmy22). All amounts in IDR.
+   Lensa 51 — central config. Edit here, the whole site updates.
    ============================================================ */
 
-export const FASTWORK_PROFILE = "https://fastwork.id/user/fahmy22";
-export const EMAIL = "masben44@gmail.com";
+export const BRAND = {
+  name: "Lensa 51",
+  tagline: "Creative Studio",
+  location: "Indonesia · Worldwide",
+  year: "2026",
+};
 
-/* ---------- Web design portfolio: the 6 live sites ---------- */
-export const PROJECTS = [
-  { name: "Rora", num: "01", tag: "Athletic Footwear", year: "2026", url: "https://rora-dj1.pages.dev/" },
-  { name: "Arcova", num: "02", tag: "Commercial Property", year: "2026", url: "https://arcova.pages.dev/" },
-  { name: "Veyron", num: "03", tag: "Luxury Jewelry", year: "2026", url: "https://veyron-4iu.pages.dev/" },
-  { name: "Lumora", num: "04", tag: "Skincare", year: "2026", url: "https://lm-6bv.pages.dev/" },
-  { name: "Nexora", num: "05", tag: "Digital Agency", year: "2026", url: "https://fe-9u2.pages.dev/" },
-  { name: "Forge", num: "06", tag: "Fitness Platform", year: "2026", url: "https://we-4ii.pages.dev/" },
+export const EMAIL = "masben44@gmail.com";
+export const FASTWORK_PROFILE = "https://fastwork.id/user/fahmy22";
+
+// WhatsApp resmi Lensa 51 (di website cukup ditulis "Admin")
+export const WHATSAPP = {
+  number: "081332650249",
+  admin: "Admin",
+  name: "Rizky Taufiqurrahman", // tampil di halaman Rincian Harga
+  link: (text = "Halo Lensa 51, saya mau tanya soal project.") =>
+    `https://wa.me/6281332650249?text=${encodeURIComponent(text)}`,
+};
+
+// Sosial media & kontak — tampil (logo + nama) di footer dan halaman Contact
+export const SOCIALS = [
+  { id: "whatsapp", name: "WhatsApp", href: WHATSAPP.link() },
+  { id: "fastwork", name: "Fastwork", href: FASTWORK_PROFILE },
+  { id: "email", name: "Email", href: `mailto:${EMAIL}` },
+  { id: "instagram", name: "Instagram", href: "https://www.instagram.com/lensa_51" },
+  { id: "tiktok", name: "TikTok", href: "https://www.tiktok.com/@lensa.51" },
+  { id: "youtube", name: "YouTube", href: "https://www.youtube.com/@Lensa51" },
+  { id: "linkedin", name: "LinkedIn", href: "https://www.linkedin.com/in/fahmy-zakky" },
 ];
 
-/* ---------- Web Design service ---------- */
+// Estimasi USD untuk klien luar negeri. Ganti angka & tanggal kalau kurs di-update.
+export const USD = { rate: 17807, date: "20 September 2026" };
+
+export const idr = (n) => `Rp${n.toLocaleString("id-ID")}`;
+export const usd = (n) => `≈ US$${Math.round(n / USD.rate).toLocaleString("en-US")}`;
+
+/* ---------- Team ----------
+   Keduanya memegang semua layanan; yang beda hanya jalur chat klien.
+   photo: file di public/team/. Kosongkan ("") untuk placeholder inisial.
+   slug : alamat halaman profil (#/slug) — isi profilnya di src/profiles.js */
+const ALL_SERVICES = ["AI Cinematic & UGC", "Vibe Code Web", "Documents", "Client Handling"];
+
+export const TEAM = [
+  {
+    slug: "fahmy-zakky",
+    name: "Fahmy Zakky",
+    initials: "FZ",
+    role: "Co-Founder",
+    focus: "AI Visual Artist",
+    channel: "Fastwork",
+    photo: "/team/fahmy.webp",
+    bio: "AI visual artist dengan 200+ project komersial di Fastwork (rating 4,9/5). Memegang project dari brief sampai delivery di semua layanan Lensa 51.",
+    skills: ALL_SERVICES,
+  },
+  {
+    slug: "rizky-taufiqurrahman",
+    name: "Rizky Taufiqurrahman",
+    initials: "RT",
+    role: "Co-Founder",
+    focus: "AI Creative & Production",
+    channel: "WhatsApp",
+    photo: "/team/rizky.webp",
+    bio: "Memegang project dari brief sampai delivery di semua layanan Lensa 51 — dengan standar kualitas yang sama di setiap video, website, dan dokumen.",
+    skills: ALL_SERVICES,
+  },
+];
+
+/* ---------- Bukti dari Fastwork (profil fahmy22) ---------- */
+export const FASTWORK_STATS = {
+  badge: "Gold Seller",
+  rating: "4,9",
+  orders: 174,
+  customers: 104,
+  repeat: 69,
+  top: [
+    { name: "Konten UGC AI", sold: 90, rating: "4,9" },
+    { name: "Video Cinematic AI", sold: 81, rating: "4,9" },
+    { name: "Dokumen Profesional AI", sold: 2, rating: "5,0" },
+  ],
+};
+
+export const REVIEWS = [
+  { name: "Hanif Karuna", date: "02/12/2025", rating: "5,0", text: "Kak fahmy bisa dipercaya, bisa update pekerjaan sebelum deadline yang diajukan. Saya dan tim Natal sangat puas dengan pekerjaan kak fahmi. Terima kasih banyak." },
+  { name: "25szlahh", date: "29/03/2026", rating: "4,8", text: "Video bukan hanya sekedar gambar2 bergerak yang keren tapi yang terpenting bisa menghadirkan rasa di pemirsanya. Mas Fahmi bisa meningkatkan itu." },
+  { name: "yiqvmxbo", date: "27/11/2025", rating: "5,0", text: "Freelancer bisa memahami apa yang ada dipikiran saya dan menuangkan dalam videonya. Fast response, bisa menerangkan proses dengan baik." },
+  { name: "Akun anonim", date: "04/08/2026", rating: "5,0", text: "Terimakasih sudah membantu dengan baik dan sabar, memberikan penjelasan yang detail, recommended worker." },
+  { name: "fajardwiiy", date: "02/02/2026", rating: "5,0", repeat: 3, text: "Sangat baik dan ramah dan bertanggungjawab sampai tahap akhir video, rekomended." },
+  { name: "Akun anonim", date: "02/12/2025", rating: "5,0", text: "Keren, ngerti brief dengan baik, dan memberi masukan yang diperlukan. Semoga sukses terus kakak Fahmi." },
+];
+
+/* ---------- Web Design ---------- */
 export const WEB = {
-  fastwork: "https://fastwork.id/user/fahmy22/web-development-85779931",
+  orderUrl: "https://fastwork.id/user/fahmy22/web-development-85779931",
+  orderLabel: "Order via Fastwork",
+  // img: screenshot website di public/work/ (1440x900, .webp)
+  projects: [
+    { name: "Rora", tag: "Athletic Footwear", year: "2026", url: "https://rora-dj1.pages.dev/", img: "/work/rora.webp" },
+    { name: "Arcova", tag: "Commercial Property", year: "2026", url: "https://arcova.pages.dev/", img: "/work/arcova.webp" },
+    { name: "Veyron", tag: "Luxury Jewelry", year: "2026", url: "https://veyron-4iu.pages.dev/", img: "/work/veyron.webp" },
+    { name: "Lumora", tag: "Skincare", year: "2026", url: "https://lm-6bv.pages.dev/", img: "/work/lumora.webp" },
+    { name: "Nexora", tag: "Digital Agency", year: "2026", url: "https://fe-9u2.pages.dev/", img: "/work/nexora.webp" },
+    { name: "Forge", tag: "Fitness Platform", year: "2026", url: "https://we-4ii.pages.dev/", img: "/work/forge.webp" },
+  ],
   packages: [
     {
       name: "Basic", price: "Rp1.000.000", unit: "/ project",
@@ -38,60 +124,34 @@ export const WEB = {
   ],
 };
 
-/* ---------- Video AI — 2 sub-services, pricing mirrors Fiverr (USD) ----------
-   Order buttons point to the Fiverr gigs (lieblinglieblin).                 */
-
-// Gig 1 — AI Video Ads / Commercial
-export const VIDEO_COMMERCIAL = {
-  label: "Commercial",
-  fiverr: "https://www.fiverr.com/lieblinglieblin/produce-stunning-ai-video-ads-commercial-for-your-brand",
-  tagline: "Video ads sinematik buat brand & produk — hook kuat, siap tayang di TikTok, Reels & Shorts.",
-  packages: [
-    {
-      name: "Basic", price: "$50", unit: "/ video",
-      meta: "15 detik · 2 hari · 1x revisi",
-      points: ["Video ads 15 detik", "Karakter konsisten", "10 shots", "Untuk brand / produk"],
-    },
-    {
-      name: "Standard", price: "$100", unit: "/ video", featured: true,
-      meta: "30 detik · 3 hari · 1x revisi",
-      points: ["Video ads 30 detik", "Prompt / workflow delivery", "Karakter konsisten", "15 shots"],
-    },
-    {
-      name: "Premium", price: "$150", unit: "/ video",
-      meta: "60 detik · 4 hari · 1x revisi",
-      points: ["Video ads 60 detik", "Video editing", "Prompt / workflow delivery", "20 shots"],
-    },
+/* ---------- AI Video ---------- */
+export const VIDEO = {
+  fastworkUrl: "https://fastwork.id/byob/v1enTMz3Hq?openExternalBrowser=1&source=byob",
+  driveUrl: "https://drive.google.com/drive/folders/1iIFDAzuxnDcyrahVFNTkWw3-OS6SIJNG?usp=drive_link",
+  showreel: "/videos/showreel.mp4",
+  // Karya di halaman AI Cinematic (geser horizontal). File di public/videos/.
+  // ratio: lebar ÷ tinggi video (21:9 ≈ 2.333, 16:9 ≈ 1.778)
+  works: [
+    { name: "Showreel", tag: "Brand Reel", src: "/videos/showreel.mp4", ratio: 2.333 },
+    { name: "Lipstick", tag: "Beauty Commercial", src: "/videos/lipstick.mp4", ratio: 2.333 },
+    { name: "Herbafit", tag: "Product Launch", src: "/videos/herbafit.mp4", ratio: 1.778 },
+    { name: "Rendang", tag: "F&B Commercial", src: "/videos/rendang.mp4", ratio: 2.333 },
+    { name: "Beverage", tag: "F&B Commercial", src: "/videos/clip-1.mp4", ratio: 2.333 },
+    { name: "Travel", tag: "Travel & Tourism", src: "/videos/travel.mp4", ratio: 2.333 },
+    { name: "Mi Goreng", tag: "F&B Commercial", src: "/videos/clip-2.mp4", ratio: 2.333 },
   ],
 };
 
-// Gig 2 — AI Company Profile / Cinematic
-export const VIDEO_PROFILE = {
-  label: "Company Profile",
-  fiverr: "https://www.fiverr.com/lieblinglieblin/create-ai-company-profile-video-for-your-business",
-  tagline: "Company profile cinematic AI — storytelling brand kamu dalam 1–3 menit, tanpa ribet shooting.",
-  packages: [
-    {
-      name: "Basic", price: "$150", unit: "/ video",
-      meta: "1 menit · 3 hari · 1x revisi",
-      points: ["Company profile 1 menit", "Cinematic AI", "15 shots", "Untuk brand kamu"],
-    },
-    {
-      name: "Standard", price: "$250", unit: "/ video", featured: true,
-      meta: "2 menit · 5 hari · 2x revisi",
-      points: ["Company profile 2 menit", "Cinematic AI", "20 shots", "2x revisi"],
-    },
-    {
-      name: "Premium", price: "$350", unit: "/ video",
-      meta: "3 menit · 7 hari · 3x revisi",
-      points: ["Company profile 3 menit", "Cinematic AI", "25 shots", "3x revisi"],
-    },
-  ],
-};
-
-/* ---------- Documents service ---------- */
+/* ---------- Documents ---------- */
 export const DOCUMENTS = {
-  fastwork: "https://fastwork.id/user/fahmy22/presentation-19809039",
+  orderUrl: "https://fastwork.id/user/fahmy22/presentation-19809039",
+  orderLabel: "Order via Fastwork",
+  types: [
+    { name: "Presentation", desc: "Pitch deck, company profile, materi training — PPT yang clean & meyakinkan." },
+    { name: "Word", desc: "Proposal, SOP, surat & CV profesional yang rapi dan siap kirim." },
+    { name: "Excel", desc: "Dashboard, proyeksi keuangan & spreadsheet otomatis yang gampang dibaca." },
+    { name: "PDF", desc: "Dokumen final siap cetak / kirim, layout konsisten dan profesional." },
+  ],
   packages: [
     {
       name: "Basic", price: "Rp50.000", unit: "/ paket",
@@ -111,16 +171,31 @@ export const DOCUMENTS = {
   ],
 };
 
-/* ---------- Video AI: showreel (file video lokal di /public/videos) ----------
-   Taruh file video di folder:  public/videos/
-   Kasih nama PERSIS seperti di "src" bawah ini (atau ganti nama di sini).
-   Tips: tiap file usahakan < 25 MB (compress dulu kalau besar).            */
-export const VIDEO_REEL = [
-  { src: "/videos/showreel.mp4", label: "Showreel", big: true },
-  { src: "/videos/clip-1.mp4", label: "Clip 01" },
-  { src: "/videos/clip-2.mp4", label: "Clip 02" },
+export const SERVICES = [
+  {
+    id: "ai-cinematic", num: "01", name: "AI Cinematic & UGC",
+    short: "Video iklan sinematik & konten UGC dengan AI untuk brand, company, dan UMKM.",
+    tags: ["Brand & Company", "UMKM", "Omni Flash · Seedance"],
+  },
+  {
+    id: "vibe-code", num: "02", name: "Vibe Code Web Design",
+    short: "Website custom lewat vibe coding — cepat, responsive, penuh motion, bukan template.",
+    tags: ["Landing Page", "Company Website", "Custom Code"],
+  },
+  {
+    id: "documents", num: "03", name: "Documents",
+    short: "PPT, Word, Excel & PDF profesional yang bikin brand kamu kredibel.",
+    tags: ["Pitch Deck", "Proposal", "Dashboard"],
+  },
 ];
 
-// 👇 GANTI dengan link folder Google Drive project video kamu
-//    (set sharing: "Anyone with the link" biar klien bisa buka)
-export const VIDEO_PROJECTS_URL = "https://drive.google.com/drive/folders/1iIFDAzuxnDcyrahVFNTkWw3-OS6SIJNG?usp=drive_link";
+// Layanan berikutnya — tampil di Home sebagai "Coming soon"
+export const COMING_SOON = [
+  { name: "AI Translator", desc: "Terjemahan halaman web, buku, dan dokumen dengan AI — cepat dan tetap natural.", for: "Penerbit · Bisnis · Akademik" },
+  { name: "AI Voice Over", desc: "Voice over natural untuk iklan, video, dan presentasi dalam berbagai bahasa & karakter suara.", for: "Brand · Kreator · E-learning" },
+  { name: "AI Image", desc: "Pembuatan gambar & photoshoot produk dengan AI — tanpa studio, tanpa sesi foto.", for: "UMKM · Brand · E-commerce" },
+  { name: "AI MV", desc: "Video klip musik dengan visual AI sinematik yang mengikuti lagu dan cerita.", for: "Musisi · Label · Produser" },
+  { name: "AI Movie", desc: "Film pendek dan produksi cerita sinematik berbasis AI.", for: "Filmmaker · Rumah produksi" },
+  { name: "AI Wedding", desc: "Konten AI untuk kebutuhan pernikahan — video, visual, dan momen spesial klien.", for: "Pasangan · Wedding organizer" },
+  { name: "AI Music", desc: "Musik & instrumen original dengan AI — untuk company, konten, atau karya pribadi.", for: "Company · Kreator · Musisi" },
+];

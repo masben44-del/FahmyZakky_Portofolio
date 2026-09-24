@@ -1,68 +1,65 @@
 import { DOCUMENTS } from "../config.js";
-import { marquee, contactBand, pricing } from "../partials.js";
+import { ARROW, BTN, pageHero, pricing, scrubText, marquee, ctaBand } from "../partials.js";
+import { fanScene, setupFan } from "../scenes.js";
+
+export function setup(root) {
+  setupFan(root);
+}
 
 export const title = "Documents";
-export const theme = "docs";
-export const visual = 3; // glass
-
-const DOCS = [
-  { num: "01", name: "Presentation", desc: "Pitch deck, company profile, materi training — PPT yang clean & meyakinkan." },
-  { num: "02", name: "Word", desc: "Proposal, SOP, surat & CV profesional yang rapi dan siap kirim." },
-  { num: "03", name: "Excel", desc: "Dashboard, proyeksi keuangan & spreadsheet otomatis yang gampang dibaca." },
-  { num: "04", name: "PDF", desc: "Dokumen final siap cetak / kirim, layout konsisten dan profesional." },
-];
 
 export function render() {
   return `
-    <section class="page-hero">
-      <p class="page-hero__index" data-fade>(Documents — 03)</p>
-      <h1 class="page-hero__title">
-        <span class="line" data-reveal><span>Documents</span></span>
-        <span class="line line--serif" data-reveal><span><em>done right</em></span></span>
-      </h1>
-      <p class="page-hero__desc" data-fade>
-        Dokumen profesional dengan AI + sentuhan desain: PPT, Word, Excel & PDF
-        siap pakai. Cepat, rapi, dan bikin kamu kelihatan kredibel.
-      </p>
-    </section>
+    ${pageHero({
+      index: "(Documents — 03)",
+      lines: ["Documents", "~done right."],
+      desc: "Dokumen profesional dengan bantuan AI plus sentuhan desain — rapi, konsisten, dan siap dipakai untuk presentasi, proposal, atau laporan.",
+    })}
 
-    ${marquee(["Presentation", "Word", "Excel", "PDF", "Pitch Deck", "Company Profile"])}
+    ${fanScene()}
 
-    <section class="vservices">
-      <div class="vservices__head">
-        <p class="vservices__index" data-fade>(Yang bisa dibuat)</p>
-        <h2 class="vservices__title" data-fade>Empat format,<br/>satu standar rapi.</h2>
+    <section class="section">
+      <div class="section__head">
+        <span class="label" data-fade>(Yang bisa kami buat)</span>
+        <a class="textlink" href="${DOCUMENTS.orderUrl}" target="_blank" rel="noopener" data-link data-fade>
+          Lihat contoh di Fastwork ${ARROW}
+        </a>
       </div>
-      <div class="vservices__grid vservices__grid--4">
-        ${DOCS.map(
-          (d) => `
-          <div class="vservice" data-reveal-card>
-            <span class="vservice__num">${d.num}</span>
-            <h3 class="vservice__name">${d.name}</h3>
-            <p class="vservice__desc">${d.desc}</p>
-          </div>`
-        ).join("")}
+      <div class="dtypes">
+        ${DOCUMENTS.types.map((d, i) => `
+          <div class="dtype" data-card="${i}">
+            <span class="label">0${i + 1}</span>
+            <h3>${d.name}</h3>
+            <p>${d.desc}</p>
+          </div>`).join("")}
       </div>
     </section>
 
-    <section class="statement">
-      <h2 class="statement__text" data-scrub data-word-wrap>
-        <span data-word>First</span> <span data-word>impressions</span>
-        <span data-word>are</span> <span data-word>made</span>
-        <span data-word>on</span> <span data-word>a</span>
-        <span data-word>slide.</span> <span data-word>Make</span>
-        <span data-word>yours</span> <span data-word>count.</span>
+    <div class="tapes tapes--single">
+      ${marquee(["Pitch Deck", "Proposal", "Company Profile", "Dashboard", "Laporan"], { variant: "olive", tilt: -1.5 })}
+    </div>
+
+    <section class="intro intro--tight">
+      <span class="label" data-fade>(Kenapa penting)</span>
+      <h2 class="intro__text" data-scrub>
+        ${scrubText("First impressions are made on a *slide.* Make yours *count.*")}
       </h2>
     </section>
 
-    ${pricing({
-      index: "(Paket — Documents)",
-      title: "Mulai dari<br/>Rp50.000.",
-      note: "Semua paket: 1 hari pengerjaan, 3x revisi, diskusi unlimited.",
-      packages: DOCUMENTS.packages,
-      orderUrl: DOCUMENTS.fastwork,
-    })}
+    <section class="section" id="harga">
+      ${pricing({
+        label: "(Paket — Documents)",
+        title: "Mulai dari Rp50 ribu.",
+        note: "Semua paket: 1 hari pengerjaan, 3x revisi, diskusi unlimited.",
+        packages: DOCUMENTS.packages,
+        buttons: [
+          BTN.fastwork(DOCUMENTS.orderUrl, DOCUMENTS.orderLabel),
+          BTN.whatsapp("Halo Lensa 51, saya mau tanya soal jasa pembuatan dokumen."),
+          BTN.email(),
+        ],
+      })}
+    </section>
 
-    ${contactBand()}
+    ${ctaBand()}
   `;
 }
