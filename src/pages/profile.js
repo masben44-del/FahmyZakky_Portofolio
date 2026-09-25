@@ -22,6 +22,22 @@ function block(label, title, body) {
     </section>`;
 }
 
+const pills = (items) => `<ul class="prof-clients" data-fade>${items.map((c) => `<li>${c}</li>`).join("")}</ul>`;
+
+/** Flat list of names, or groups of { title, note?, items }. */
+function clientList(clients) {
+  if (typeof clients[0] === "string") return pills(clients);
+  return `
+    <div class="prof-client-groups">
+      ${clients.map((g) => `
+        <div class="prof-client-group">
+          <span class="label" data-fade>${g.title}</span>
+          ${g.note ? `<p class="prof-note" data-fade>${g.note}</p>` : ""}
+          ${pills(g.items)}
+        </div>`).join("")}
+    </div>`;
+}
+
 /** Builds a page module for one team member (#/<slug>). */
 export function createProfile(slug) {
   const m = TEAM.find((t) => t.slug === slug);
@@ -51,7 +67,7 @@ export function createProfile(slug) {
             </ul>
             <div class="order" data-fade>
               ${contactBtn ? `<a class="btn btn--lime" href="${contactBtn.href}" target="_blank" rel="noopener" data-link><span>${contactBtn.label}</span>${ARROW}</a>` : ""}
-              <a class="btn btn--ghost" href="mailto:${EMAIL}" data-link><span>Email</span>${ARROW}</a>
+              <a class="btn btn--ghost" href="mailto:${p.email || EMAIL}" data-link><span>Email</span>${ARROW}</a>
               ${(p.links || []).map((l) => `<a class="btn btn--ghost" href="${l.href}" target="_blank" rel="noopener" data-link><span>${l.label}</span>${ARROW}</a>`).join("")}
             </div>
           </div>
@@ -67,7 +83,10 @@ export function createProfile(slug) {
 
       ${block("(Layanan)", "Yang bisa dipegang", `
         <p class="prof-note" data-fade>Seperti semua anggota Lensa 51, ${first} menangani semua layanan kami:</p>
-        <ul class="incl" data-fade>${m.skills.map((s) => `<li>${s}</li>`).join("")}</ul>`)}
+        <ul class="incl" data-fade>${m.skills.map((s) => `<li>${s}</li>`).join("")}</ul>
+        ${p.extraServices?.length ? `
+          <p class="prof-note prof-note--gap" data-fade>Plus spesialisasi tambahan:</p>
+          <ul class="incl" data-fade>${p.extraServices.map((s) => `<li>${s}</li>`).join("")}</ul>` : ""}`)}
 
       ${block("(Keahlian)", "Skill & tools", p.skills?.length ? `
         <div class="prof-skills">
@@ -90,8 +109,7 @@ export function createProfile(slug) {
             </li>`).join("")}
         </ol>` : soon("Riwayat pengalaman"))}
 
-      ${block("(Klien)", "Pernah dipercaya", p.clients?.length ? `
-        <ul class="prof-clients" data-fade>${p.clients.map((c) => `<li>${c}</li>`).join("")}</ul>` : soon("Daftar klien"))}
+      ${block("(Klien)", "Pernah dipercaya", p.clients?.length ? clientList(p.clients) : soon("Daftar klien"))}
 
       ${block("(Karya)", "Karya pribadi", p.works?.length ? `
         <div class="prof-works">${p.works.map(mediaCard).join("")}</div>
@@ -99,7 +117,7 @@ export function createProfile(slug) {
 
       ${p.languages?.length ? block("(Bahasa)", "Bahasa", `<ul class="prof-clients" data-fade>${p.languages.map((l) => `<li>${l}</li>`).join("")}</ul>`) : ""}
 
-      ${p.reviews ? proofSection({ index: `(Testimoni klien ${first})` }) : ""}
+      ${p.proof ? proofSection({ index: `(Testimoni klien ${first})`, ...p.proof }) : p.reviews ? proofSection({ index: `(Testimoni klien ${first})` }) : ""}
 
       ${ctaBand()}
     `;

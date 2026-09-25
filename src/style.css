@@ -841,6 +841,10 @@ ul { list-style: none; }
   border-radius: 999px;
   font-weight: 600;
 }
+.prof-note--gap { margin-top: 1.4rem; }
+.prof-client-groups { display: grid; gap: 2rem; }
+.prof-client-group > .label { display: block; color: var(--lime); margin-bottom: 0.7rem; }
+.prof-client-group .prof-note { margin: -0.3rem 0 0.9rem; font-size: 0.9rem; }
 .prof-works { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .prof-soon {
   display: grid;

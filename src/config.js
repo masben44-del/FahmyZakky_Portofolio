@@ -16,7 +16,7 @@ export const FASTWORK_PROFILE = "https://fastwork.id/user/fahmy22";
 export const WHATSAPP = {
   number: "081332650249",
   admin: "Admin",
-  name: "Rizky Taufiqurrahman", // tampil di halaman Rincian Harga
+  name: "Rizky Taufiqurrohman", // tampil di halaman Rincian Harga
   link: (text = "Halo Lensa 51, saya mau tanya soal project.") =>
     `https://wa.me/6281332650249?text=${encodeURIComponent(text)}`,
 };
@@ -57,14 +57,14 @@ export const TEAM = [
     skills: ALL_SERVICES,
   },
   {
-    slug: "rizky-taufiqurrahman",
-    name: "Rizky Taufiqurrahman",
+    slug: "rizky-taufiqurrohman",
+    name: "Rizky Taufiqurrohman",
     initials: "RT",
     role: "Co-Founder",
-    focus: "AI Creative & Production",
+    focus: "AI Video Director",
     channel: "WhatsApp",
     photo: "/team/rizky.webp",
-    bio: "Memegang project dari brief sampai delivery di semua layanan Lensa 51 — dengan standar kualitas yang sama di setiap video, website, dan dokumen.",
+    bio: "AI video director dengan 30+ project video AI — spesialis konsistensi karakter multi-scene dan storytelling yang benar-benar mengalir.",
     skills: ALL_SERVICES,
   },
 ];

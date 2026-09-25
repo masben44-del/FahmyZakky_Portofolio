@@ -3,27 +3,46 @@ import { ARROW } from "./partials.js";
 
 const STAR = `<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M12 2.5l2.9 6.2 6.6.8-4.9 4.6 1.3 6.6L12 17.4l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z"/></svg>`;
 
+/* Ulasan Fastwork punya tanggal + rating; testimoni langsung punya `role` sebagai gantinya. */
 function review(r, i) {
   const anon = /anonim/i.test(r.name);
+  const name = anon && !r.role ? "Akun anonim" : r.name;
   return `
     <figure class="review" data-card="${i % 3}">
       <div class="review__head">
         <span class="review__avatar">${anon ? "?" : r.name.charAt(0).toUpperCase()}</span>
         <div class="review__who">
-          <strong>${anon ? "Akun anonim" : r.name}</strong>
-          <span class="label">${r.date}</span>
+          <strong>${name}</strong>
+          <span class="label">${r.role || r.date}</span>
         </div>
-        <span class="review__rating">${STAR}${r.rating}</span>
+        ${r.rating ? `<span class="review__rating">${STAR}${r.rating}</span>` : ""}
       </div>
-      <blockquote>“${r.text}”</blockquote>
+      <blockquote>${r.paraphrase ? r.text : `“${r.text}”`}</blockquote>
       <figcaption class="label">
-        Ulasan Fastwork${r.repeat ? ` · <b>${r.repeat}× order</b>` : ""}
+        ${r.role ? "Testimoni klien" : "Ulasan Fastwork"}${r.repeat ? ` · <b>${r.repeat}× order</b>` : ""}
       </figcaption>
     </figure>`;
 }
 
-export function proofSection({ index = "(Testimoni)" } = {}) {
-  const s = FASTWORK_STATS;
+// Kartu default: statistik Fastwork (@fahmy22)
+const FASTWORK_CARD = {
+  href: FASTWORK_PROFILE,
+  top: "Fastwork · @fahmy22",
+  badge: `${FASTWORK_STATS.badge} ✓`,
+  big: FASTWORK_STATS.rating,
+  stars: true,
+  bigLabel: "Rating rata-rata",
+  stats: [
+    [FASTWORK_STATS.orders, "Order"],
+    [FASTWORK_STATS.customers, "Pelanggan"],
+    [FASTWORK_STATS.repeat, "Order ulang"],
+  ],
+  list: FASTWORK_STATS.top.map((t) => [t.name, `${t.sold} terjual · ★ ${t.rating}`]),
+  go: "Lihat profil Fastwork",
+};
+
+export function proofSection({ index = "(Testimoni)", card = FASTWORK_CARD, reviews = REVIEWS } = {}) {
+  const c = card;
   return `
     <section class="proof">
       <div class="proof__head">
@@ -35,30 +54,29 @@ export function proofSection({ index = "(Testimoni)" } = {}) {
       </div>
 
       <div class="proof__body">
-        <a class="proof__fw" href="${FASTWORK_PROFILE}" target="_blank" rel="noopener" data-link data-card="0">
+        <a class="proof__fw" href="${c.href}" target="_blank" rel="noopener" data-link data-card="0">
           <div class="proof__fw-top">
-            <span class="label">Fastwork · @fahmy22</span>
-            <span class="proof__badge">${s.badge} ✓</span>
+            <span class="label">${c.top}</span>
+            <span class="proof__badge">${c.badge}</span>
           </div>
           <div class="proof__rating">
-            <b>${s.rating}</b>
-            <span class="proof__stars">${STAR.repeat(5)}</span>
-            <small class="label">Rating rata-rata</small>
+            <b>${c.big}</b>
+            ${c.stars ? `<span class="proof__stars">${STAR.repeat(5)}</span>` : ""}
+            <small class="label">${c.bigLabel}</small>
           </div>
           <dl class="proof__stats">
-            <div><dt>${s.orders}</dt><dd>Order</dd></div>
-            <div><dt>${s.customers}</dt><dd>Pelanggan</dd></div>
-            <div><dt>${s.repeat}</dt><dd>Order ulang</dd></div>
+            ${c.stats.map(([v, l]) => `<div><dt>${v}</dt><dd>${l}</dd></div>`).join("")}
           </dl>
+          ${c.list?.length ? `
           <ul class="proof__top">
-            ${s.top.map((t) => `<li><span>${t.name}</span><span>${t.sold} terjual · ★ ${t.rating}</span></li>`).join("")}
-          </ul>
-          <span class="proof__go">Lihat profil Fastwork ${ARROW}</span>
+            ${c.list.map(([a, b]) => `<li><span>${a}</span><span>${b}</span></li>`).join("")}
+          </ul>` : ""}
+          <span class="proof__go">${c.go} ${ARROW}</span>
         </a>
 
         <div class="proof__reviews">
           <div class="proof__track" data-reviews>
-            ${REVIEWS.map(review).join("")}
+            ${reviews.map(review).join("")}
           </div>
           <div class="proof__nav">
             <button class="proof__btn" data-rev="-1" data-link aria-label="Ulasan sebelumnya">${ARROW}</button>

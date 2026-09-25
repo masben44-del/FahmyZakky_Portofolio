@@ -33,9 +33,39 @@ export const EXPLORE = {
         { url: "https://youtu.be/bDDz8HPdDnw", client: "Triage di Tempat Kerja", category: "Presentasi" },
       ],
     },
-    { name: "Clay", videos: [] },
-    { name: "Pixar", videos: [] },
-    { name: "2D", videos: [] },
+    {
+      name: "Clay",
+      videos: [
+        { url: "https://youtu.be/X8fVD3SgyUQ", client: "Partai Demokrat", category: "Seminar Kebangsaan" },
+      ],
+    },
+    {
+      name: "Pixar",
+      videos: [
+        { url: "https://youtube.com/shorts/qYuFfMT4aT8", client: "Pesantren Darul Ulum Kalbar", category: "Promosi" },
+        { url: "https://youtu.be/Mf1c1As338s", client: "Ditintelkam Polda Kalsel", category: "Izin Keramaian & SKCK" },
+        { url: "https://youtu.be/loaUeKesmdU", client: "PLN × Danantara Indonesia", category: "Company Video" },
+        { url: "https://youtube.com/shorts/3KNBU1mOVTA", client: "Super Briliant Kidz", category: "Promosi" },
+        { url: "https://youtu.be/ngV8qtYJ4WQ", client: "Jagoti", category: "Explainer · K3 Safety" },
+        { url: "https://youtu.be/GXAqBCz3hjE", client: "ILC Logistics × Itochu", category: "Company Profile" },
+        { url: "https://youtu.be/OHrisQnwLCM", client: "Kerja+", category: "Explainer", ratio: "8:3" },
+        { url: "https://youtu.be/YzFWUGTZoVU", client: "SJS — Sinar Jernih Suksesindo", category: "Company Profile" },
+      ],
+    },
+    {
+      name: "2D",
+      videos: [
+        { url: "https://youtube.com/shorts/NLzdRn9IcKE", client: "Music Video Lirik", category: "Music Video" },
+        { url: "https://youtu.be/Yw56CHdG204", client: "TentangJawa — Diponegoro", category: "Edukasi Sejarah" },
+        { url: "https://youtu.be/pycLZt9Dl5c", client: "Dunia Baru Ini Milik Kita", category: "Cyberpunk MV" },
+      ],
+    },
+    {
+      name: "3D Diorama",
+      videos: [
+        { url: "https://youtube.com/shorts/4d5CZ84cPmo", client: "Rahayu Swalayan", category: "Promosi Minimarket" },
+      ],
+    },
   ],
   seedance: [
     {
@@ -57,9 +87,18 @@ export const EXPLORE = {
     { name: "Clay", videos: [] },
     {
       name: "Pixar",
-      videos: [{ url: "https://youtu.be/V0R1JZaJVG4", client: "ASC", category: "Company Profile" }],
+      videos: [
+        { url: "https://youtube.com/shorts/Yp7RWZC9X3k", client: "Birthday Story", category: "Short Story" },
+        { url: "https://youtu.be/bfaxGZF2tB0", client: "Manasik Haji", category: "Edukasi" },
+        { url: "https://youtube.com/shorts/Gydd4xSYpdQ", client: "Grandson and Grandma", category: "Short Story" },
+        { url: "https://youtu.be/V0R1JZaJVG4", client: "ASC", category: "Company Profile" },
+      ],
     },
-    { name: "2D", videos: [] },
+    {
+      name: "2D",
+      videos: [{ url: "https://youtube.com/shorts/iX_m_D6KbKg", client: "MIA", category: "Story Telling" }],
+    },
+    { name: "3D Diorama", videos: [] },
   ],
 };
 
