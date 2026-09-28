@@ -21,7 +21,7 @@ export function setupReveals(root) {
       ease: "expo.out",
       delay: st ? 0 : 0.1 + (Number(line.dataset.reveal) || 0) * 0.1,
       scrollTrigger: st,
-      clearProps: focusIn ? "filter" : undefined,
+      ...(focusIn && { clearProps: "filter" }), // an undefined clearProps makes GSAP throw
     });
   });
 

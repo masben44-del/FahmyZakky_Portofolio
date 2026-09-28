@@ -190,6 +190,38 @@ export const SERVICES = [
 ];
 
 // Layanan berikutnya — tampil di Home sebagai "Coming soon"
+/* ---------- Klien & partner (logo di public/clients/, file asli di assets-src/clients/) ----------
+   Urutan = urutan lewat di scene "Autofocus". dark: logo berlatar hitam. */
+export const CLIENTS = [
+  { name: "Bank Indonesia", logo: "bank-indonesia" },
+  { name: "Kementerian ESDM", logo: "esdm" },
+  { name: "TNI", logo: "tni" },
+  { name: "PLN", logo: "pln" },
+  { name: "Antam", logo: "antam" },
+  { name: "Manulife", logo: "manulife" },
+  { name: "Danantara Indonesia", logo: "danantara" },
+  { name: "Kemenko Infrastruktur", logo: "kemenko-infra" },
+  { name: "Adira Finance", logo: "adira" },
+  { name: "Kementerian PUPR", logo: "pupr", ext: "svg" },
+  { name: "Bank Sinarmas", logo: "bank-sinarmas" },
+  { name: "Combiphar", logo: "combiphar" },
+  { name: "Ditintelkam Polda Kalsel", logo: "ditintelkam" },
+  { name: "SIMGROUP", logo: "simgroup" },
+  { name: "Honda AHASS", logo: "ahass" },
+  { name: "Asahimas Chemical", logo: "asahimas" },
+  { name: "Dinas Lingkungan Hidup", logo: "dlh" },
+  { name: "Epic Anima", logo: "epic-anima", dark: true },
+  { name: "Sinar Jernih Suksesindo", logo: "sjs" },
+  { name: "Dreamline", logo: "dreamline", dark: true },
+  { name: "Motor Sights", logo: "msi" },
+  { name: "Lollyjob", logo: "lollyjob" },
+  { name: "The Terra Apartment", logo: "terra-apartment-house" },
+  { name: "Posyandu", logo: "posyandu" },
+  { name: "PnL Creation", logo: "pnl" },
+  { name: "Dust Bunny", logo: "dust-bunny" },
+  { name: "Emmi", logo: "emmi" },
+];
+
 export const COMING_SOON = [
   { name: "AI Translator", desc: "Terjemahan halaman web, buku, dan dokumen dengan AI — cepat dan tetap natural.", for: "Penerbit · Bisnis · Akademik" },
   { name: "AI Voice Over", desc: "Voice over natural untuk iklan, video, dan presentasi dalam berbagai bahasa & karakter suara.", for: "Brand · Kreator · E-learning" },

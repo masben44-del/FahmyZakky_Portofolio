@@ -2,9 +2,10 @@
    cine  — letterbox opens + rack focus        (AI Cinematic & UGC)
    stack — isometric site stack deploys to grid (Vibe Code Web Design)
    fan   — document deck fans out and spreads   (Documents)
-   focus — focus pulls from one portrait to the other (Team) */
+   focus — focus pulls from one portrait to the other (Team)
+   autofocus — dolly through client logos, AF locks each one (Home, AI Cinematic) */
 import { pinProgress, playInView, seg, lerp, ease } from "./pinned.js";
-import { VF } from "./partials.js";
+import { VF, ARROW } from "./partials.js";
 
 /* ============================ CINE ============================ */
 const STEPS = [
@@ -262,5 +263,137 @@ export function setupFocus(root) {
     name.textContent = both > 0.5 ? "Lensa 51" : pull < 0.5 ? a.dataset.name : b.dataset.name;
     line.style.opacity = both;
     line.style.transform = `translateY(${(1 - both) * 30}px)`;
+  });
+}
+
+/* ============================ AUTOFOCUS ============================
+   The camera dollies down a tunnel of client logos. Each one is soft in the
+   distance, turns sharp as it crosses the focal plane — where the AF box
+   locks onto it — then drifts past the lens. */
+const pad2 = (n) => String(n).padStart(2, "0");
+
+export function clientsScene(clients, { index = "(Klien & partner)" } = {}) {
+  return `
+    <section class="pin pin--clients" data-clients style="--n:${clients.length}">
+      <div class="pin__stage clients">
+        <div class="clients__hud label">
+          <span><span class="rec"></span>AF-C · Tracking</span>
+          <span>Fokus <b data-af-dist>∞</b></span>
+        </div>
+        <div class="clients__space" data-af-space>
+          ${clients.map((c) => `
+            <figure class="clogo ${c.dark ? "clogo--dark" : ""}" data-af-logo data-name="${c.name}">
+              <img src="/clients/${c.logo}.${c.ext || "webp"}" alt="${c.name}" decoding="async" />
+            </figure>`).join("")}
+        </div>
+        <div class="clients__af" data-af-box aria-hidden="true">
+          <i></i><i></i><i></i><i></i>
+          <span class="clients__tag label"><b data-af-count>01</b>/${pad2(clients.length)} · <span data-af-name>${clients[0].name}</span></span>
+        </div>
+        <div class="clients__copy">
+          <span class="label">${index}</span>
+          <h2 class="clients__title"><span>Dipercaya</span><em>${clients.length} instansi & brand.</em></h2>
+        </div>
+        <div class="clients__end" data-af-end>
+          <p class="clients__next">Brand kamu, <em>berikutnya.</em></p>
+          <a class="btn btn--lime" href="#/contact" data-route data-link><span>Start a project</span>${ARROW}</a>
+        </div>
+      </div>
+      <ul class="visually-hidden">${clients.map((c) => `<li>${c.name}</li>`).join("")}</ul>
+    </section>`;
+}
+
+export function setupClients(root) {
+  const section = root.querySelector("[data-clients]");
+  if (!section || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const space = section.querySelector("[data-af-space]");
+  const logos = [...section.querySelectorAll("[data-af-logo]")];
+  const box = section.querySelector("[data-af-box]");
+  const count = section.querySelector("[data-af-count]");
+  const name = section.querySelector("[data-af-name]");
+  const dist = section.querySelector("[data-af-dist]");
+  const tag = box.querySelector(".clients__tag");
+  const end = section.querySelector("[data-af-end]");
+
+  const n = logos.length;
+  const PERSP = 900; // keep in sync with .clients__space perspective
+  const FOCAL = -320; // z of the focal plane
+  const GAP = 520; // z distance between consecutive logos
+  const FAR = -3800;
+  const NEAR = 640;
+  const P0 = 0.06; // progress at which the first / last logo is in focus
+  const P1 = 0.9;
+  const TRAVEL = (GAP * (n - 1)) / (P1 - P0);
+  const sFocal = PERSP / (PERSP - FOCAL);
+  const angle = logos.map((_, i) => i * 2.39996 - Math.PI / 2); // golden angle spiral
+  let current = -1;
+  let tagW = 0;
+
+  pinProgress(section, (p) => {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const mobile = vw < 700;
+    const tw = mobile ? 140 : 260;
+    const th = mobile ? 84 : 152;
+    const cy = vh * (mobile ? 0.4 : 0.44);
+    const rx = (mobile ? vw * 0.2 : Math.min(vw * 0.34, 560)) / sFocal;
+    const ry = (vh * (mobile ? 0.22 : 0.25)) / sFocal;
+    const maxBlur = mobile ? 5 : 10;
+    space.style.setProperty("--cy", `${cy}px`);
+    space.style.setProperty("--tw", `${tw}px`);
+    space.style.setProperty("--th", `${th}px`);
+
+    let best = -1;
+    let bestD = Infinity;
+    let bx = 0;
+    let by = 0;
+    let bz = 0;
+    logos.forEach((el, i) => {
+      const z = FOCAL + (p - (P0 + ((P1 - P0) * i) / (n - 1))) * TRAVEL;
+      if (z < FAR || z > NEAR) {
+        el.style.visibility = "hidden";
+        return;
+      }
+      const a = angle[i] + p * 0.9; // the whole barrel twists slowly as you scroll
+      const x = Math.cos(a) * rx;
+      const y = Math.sin(a) * ry;
+      const d = Math.abs(z - FOCAL);
+      const blur = Math.min(maxBlur, d / 110);
+      el.style.visibility = "visible";
+      el.style.opacity = Math.min(seg(z, FAR, FAR + 900), 1 - seg(z, 220, NEAR));
+      el.style.zIndex = Math.round(z + 5000);
+      el.style.filter = blur < 0.4 ? "none" : `blur(${blur.toFixed(1)}px)`;
+      el.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, ${z.toFixed(1)}px)`;
+      if (d < bestD) [best, bestD, bx, by, bz] = [i, d, x, y, z];
+    });
+
+    // AF box: projected position of the logo nearest the focal plane
+    const lock = best < 0 ? 0 : 1 - seg(bestD, 140, 300);
+    box.style.opacity = lock;
+    if (best >= 0) {
+      const s = PERSP / (PERSP - bz);
+      const w = tw * s + 20;
+      const h = th * s + 20;
+      box.style.width = `${w}px`;
+      box.style.height = `${h}px`;
+      const left = vw / 2 + bx * s - w / 2;
+      box.style.transform = `translate(${left}px, ${cy + by * s - h / 2}px)`;
+      box.classList.toggle("is-locked", bestD < 120);
+      dist.textContent = bestD < 120 ? `${((PERSP - bz) / 420).toFixed(1)}m` : "…";
+      if (best !== current) {
+        current = best;
+        count.textContent = pad2(best + 1);
+        name.textContent = logos[best].dataset.name;
+        tagW = tag.offsetWidth;
+      }
+      // keep the name tag on screen when the box sits near an edge
+      const shift = Math.min(Math.max(0, 12 - left), vw - 12 - left - tagW);
+      tag.style.transform = `translateX(${shift}px)`;
+    }
+
+    const e = seg(p, 0.92, 0.98);
+    end.style.opacity = e;
+    end.style.transform = `translate(-50%, calc(-50% + ${(1 - e) * 24}px))`;
+    end.style.pointerEvents = e > 0.5 ? "auto" : "none";
   });
 }

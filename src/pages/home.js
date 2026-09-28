@@ -1,11 +1,12 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { SERVICES, COMING_SOON, TEAM, WEB, VIDEO, WHATSAPP } from "../config.js";
+import { SERVICES, COMING_SOON, TEAM, WEB, VIDEO, WHATSAPP, CLIENTS } from "../config.js";
 import { ARROW, VF, scrubText, marquee, workCard, avatar, ctaBand } from "../partials.js";
 import { irisMarkup, bindIris } from "../aperture.js";
 import { setupMedia } from "../media.js";
 import { setupHorizontal } from "../horizontal.js";
 import { proofSection, setupProof } from "../proof.js";
+import { clientsScene, setupClients } from "../scenes.js";
 
 export const title = "";
 
@@ -146,14 +147,16 @@ export function render() {
       <div class="stat stat--lime" data-card="3"><b data-count="51">00</b><span class="label">Satu lensa, satu fokus</span></div>
     </section>
 
-    ${proofSection({ index: "(05 — Testimoni)" })}
+    ${clientsScene(CLIENTS, { index: "(05 — Klien & partner)" })}
+
+    ${proofSection({ index: "(06 — Testimoni)" })}
 
     <section class="tteaser">
       <div class="tteaser__avatars" data-fade>
         ${TEAM.map((m) => avatar(m)).join("")}
       </div>
       <div class="tteaser__copy">
-        <span class="label" data-fade>(06 — Team)</span>
+        <span class="label" data-fade>(07 — Team)</span>
         <h2 class="h2">
           <span class="line" data-reveal><span>Two minds,</span></span>
           <span class="line line--alt" data-reveal="1"><span>one lens.</span></span>
@@ -252,6 +255,7 @@ function setupTimecode(root) {
 
 export function setup(root) {
   setupReel(root);
+  setupClients(root);
   setupProof(root);
   const offH = setupHorizontal(root);
   const offT = setupTimecode(root);
