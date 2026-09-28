@@ -1,5 +1,3 @@
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { VIDEO } from "../config.js";
 import { OMNI, SEEDANCE } from "../videoPricing.js";
 import { ARROW, BTN, pageHero, pricing, orderCTA, usdNote, marquee, workCard, ctaBand } from "../partials.js";
@@ -26,36 +24,23 @@ const CHOICES = [
   },
 ];
 
-function placeholder(style) {
-  return `
-    <div class="masonry-empty">
-      ${[0, 1, 2].map((i) => `<span class="masonry-empty__ghost" style="--d:${i}"></span>`).join("")}
-      <div class="masonry-empty__text">
-        <span class="label">Style ${style}</span>
-        <strong>Contoh video segera hadir</strong>
-        <p>Sedang kami siapkan — sementara itu, tanya contoh lewat WhatsApp Admin.</p>
-      </div>
-    </div>`;
-}
+const FOLDER = `<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5h4.2l2 2.2h8.8A1.5 1.5 0 0 1 21 8.7v9.8a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 18.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>`;
 
-function gallery(model, styles) {
-  const first = Math.max(0, styles.findIndex((s) => s.videos.length));
+const driveBtn = () => `
+  <a class="btn btn--outline gallery__drive" href="${VIDEO.driveUrl}" target="_blank" rel="noopener" data-link data-fade>
+    ${FOLDER}<span>Portofolio lengkap di Google Drive</span>${ARROW}
+  </a>`;
+
+function gallery(model, videos) {
   return `
-    <div class="gallery" data-gallery>
+    <div class="gallery">
       <div class="gallery__head">
-        <span class="label" data-fade>(Contoh video ${model} — per style)</span>
+        <span class="label" data-fade>(Contoh video ${model} — ${String(videos.length).padStart(2, "0")} video)</span>
         <span class="label gallery__hint" data-fade>Klik untuk memutar</span>
       </div>
-      <div class="gallery__tabs" role="tablist" data-fade>
-        ${styles.map((s, i) => `
-          <button class="chip ${i === first ? "is-active" : ""} ${s.videos.length ? "" : "chip--soon"}" role="tab" data-style-tab="${i}" data-link>
-            ${s.name}<sup>${s.videos.length ? String(s.videos.length).padStart(2, "0") : "segera"}</sup>
-          </button>`).join("")}
-      </div>
-      ${styles.map((s, i) => `
-        <div class="gallery__panel ${i === first ? "" : "is-hidden"}" data-style-panel="${i}">
-          ${s.videos.length ? `<div class="masonry">${s.videos.map(mediaCard).join("")}</div>` : placeholder(s.name)}
-        </div>`).join("")}
+      <div class="gallery__bar">${driveBtn()}</div>
+      <div class="masonry">${videos.map(mediaCard).join("")}</div>
+      <div class="gallery__bar gallery__bar--end">${driveBtn()}</div>
     </div>`;
 }
 
@@ -164,31 +149,11 @@ export function render() {
   `;
 }
 
-function setupGallery(root, lenis) {
-  const offMasonry = setupMasonry(root);
-  bindPlayers(root, lenis);
-
-  root.querySelectorAll("[data-gallery]").forEach((gallery) => {
-    const tabs = [...gallery.querySelectorAll("[data-style-tab]")];
-    const panels = [...gallery.querySelectorAll("[data-style-panel]")];
-    tabs.forEach((tab) =>
-      tab.addEventListener("click", () => {
-        const i = tab.dataset.styleTab;
-        tabs.forEach((t) => t.classList.toggle("is-active", t === tab));
-        panels.forEach((p) => p.classList.toggle("is-hidden", p.dataset.stylePanel !== i));
-        const shown = gallery.querySelectorAll(`[data-style-panel="${i}"] .yt, [data-style-panel="${i}"] .masonry-empty`);
-        gsap.fromTo(shown, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: "expo.out", stagger: 0.05 });
-        ScrollTrigger.refresh();
-      })
-    );
-  });
-  return offMasonry;
-}
-
 export function setup(root, { lenis }) {
   setupCine(root);
   setupSubnav(root);
-  const offG = setupGallery(root, lenis);
+  bindPlayers(root, lenis);
+  const offG = setupMasonry(root);
   const offH = setupHorizontal(root);
   const offM = setupMedia(root, { autoplay: true });
   return () => {

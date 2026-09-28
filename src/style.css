@@ -1353,45 +1353,9 @@ ul { list-style: none; }
   margin-bottom: 1rem;
 }
 .gallery__hint { color: var(--lime); }
-.gallery__tabs { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.4rem; }
-.gallery__panel.is-hidden { display: none; }
-.chip--soon { border-style: dashed; color: var(--muted); }
-.chip--soon sup { text-transform: uppercase; letter-spacing: 0.06em; }
-.chip--soon.is-active { color: var(--bg); }
-
-.masonry-empty {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1.4fr 0.8fr 1.4fr;
-  gap: 12px;
-  min-height: 300px;
-}
-.masonry-empty__ghost {
-  border: 1px dashed var(--line-2);
-  border-radius: 12px;
-  background: linear-gradient(110deg, var(--bg-2) 30%, var(--bg-3) 50%, var(--bg-2) 70%) 0 0 / 300% 100%;
-  animation: shimmer 2.4s linear infinite;
-  animation-delay: calc(var(--d) * 0.25s);
-}
+.gallery__bar { display: flex; margin-bottom: 1.4rem; }
+.gallery__bar--end { justify-content: center; margin: 2rem 0 0; }
 @keyframes shimmer { to { background-position: -300% 0; } }
-.masonry-empty__text {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-content: center;
-  justify-items: center;
-  gap: 0.6rem;
-  padding: 1.5rem;
-  text-align: center;
-}
-.masonry-empty__text .label { color: var(--lime); }
-.masonry-empty__text strong {
-  font-size: clamp(1.3rem, 2.4vw, 2rem);
-  font-weight: 800;
-  font-stretch: 112%;
-  text-transform: uppercase;
-}
-.masonry-empty__text p { color: var(--muted); max-width: 40ch; font-size: 0.92rem; }
 
 /* Rows are 4px units; JS places each card in the shortest column. */
 .masonry {
@@ -2332,8 +2296,6 @@ ul { list-style: none; }
   .prof-skills { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .prof-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .prof-stats .stat { padding: 1.4rem 1rem; }
-  .masonry-empty { grid-template-columns: 1fr 1fr; min-height: 240px; }
-  .masonry-empty__ghost:nth-child(3) { display: none; }
   .masonry { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 10px; }
   .yt__play { transform: none; opacity: 0.9; width: 48px; height: 48px; margin: -24px 0 0 -24px; }
   .product__head { grid-template-columns: 1fr; gap: 1rem; }
@@ -2370,6 +2332,15 @@ ul { list-style: none; }
   .tapes { padding: 3rem 0; }
   .marquee + .marquee { margin-top: -2.8rem; }
   .footer__bottom { flex-direction: column; }
+
+  /* Galeri 2 kolom: kartu horizontal cuma ~100px tinggi, jadi play pindah ke pojok */
+  .masonry .yt__play { left: 10px; top: 10px; width: 32px; height: 32px; margin: 0; padding-left: 2px; }
+  .masonry .yt__play svg { width: 14px; height: 14px; }
+  .masonry .yt__badge { top: 10px; right: 10px; padding: 0.25rem 0.5rem; font-size: 0.52rem; }
+  .masonry .yt__meta { left: 10px; right: 10px; bottom: 8px; }
+  .masonry .yt__meta strong { font-size: 0.84rem; }
+  .masonry .yt__meta .label { font-size: 0.54rem; }
+  .masonry .yt--ultra .yt__play, .masonry .yt--ultra .yt__meta .label { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {

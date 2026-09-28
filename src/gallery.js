@@ -9,12 +9,13 @@ export function mediaCard(v, i = 0) {
   const m = mediaOf(v);
   if (!m) return "";
   const title = [v.client, v.category].filter(Boolean).join(" — ");
+  const [w, h] = m.ratio.split("/").map(Number);
   const data =
     m.type === "youtube"
       ? `data-play="youtube" data-id="${m.id}" data-shorts="${m.shorts ? 1 : ""}"`
       : `data-play="video" data-src="${m.src}" data-r="${m.playerRatio}"`;
   return `
-    <a class="yt" href="${v.url || v.src}" target="_blank" rel="noopener" ${data}
+    <a class="yt ${w / h > 2 ? "yt--ultra" : ""}" href="${v.url || v.src}" target="_blank" rel="noopener" ${data}
        data-title="${title}" style="--ar:${m.ratio}" data-link data-card="${i % 3}">
       <img src="${m.thumb}" alt="${title}" loading="lazy" />
       ${m.type === "video" ? `<video class="yt__preview" src="${m.src}" muted loop playsinline preload="none"></video>` : ""}
